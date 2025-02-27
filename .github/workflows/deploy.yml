@@ -2,7 +2,7 @@ name: Deploy VitePress site to Pages
 
 on:
   push:
-    branches: [main] # 根据实际情况修改为你的主分支名称
+    branches: [main]
 
 # 设置tokenn访问权限
 permissions:
@@ -37,24 +37,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3  # 在工作流程自动配置GithubPages
       - name: Install dependencies
-        run: pnpm install --verbose
+        run: pnpm install # 安装依赖
       - name: Build with VitePress
         run: |
-          set -e
-          pnpm run docs:build --verbose
-          touch .nojekyll
-          if [ -f .nojekyll ]; then
-            echo ".nojekyll exists"
-          else
-            echo ".nojekyll does not exist"
-          fi
-      - name: Check .nojekyll exists
-        run: |
-          if [ -f .nojekyll ]; then
-            echo ".nojekyll exists"
-          else
-            echo ".nojekyll does not exist"
-          fi
+          pnpm run docs:build # 启动项目
+          touch .nojekyll  # 通知githubpages不要使用Jekyll处理这个站点，不知道为啥不生效，就手动搞了
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2  # 上传构建产物
         with:
